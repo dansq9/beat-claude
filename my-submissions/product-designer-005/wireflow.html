@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Onboarding Wireflow V1</title>
+<style>
+  :root { --bg:#f6f6f4; --card:#fff; --ink:#1d1d1b; --mute:#6b6b66; --line:#d6d6d0; --accent:#2f5bea; --note:#fff6d6; --noteink:#5c4a00; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#161615; --card:#222220; --ink:#ececea; --mute:#a3a39d; --line:#3a3a37; --accent:#7f9cff; --note:#3a3317; --noteink:#f1dc8c; } }
+  :root[data-theme="dark"] { --bg:#161615; --card:#222220; --ink:#ececea; --mute:#a3a39d; --line:#3a3a37; --accent:#7f9cff; --note:#3a3317; --noteink:#f1dc8c; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.5 system-ui, -apple-system, Segoe UI, sans-serif; }
+  main { max-width:980px; margin:0 auto; padding:24px 16px 64px; }
+  h1 { font-size:22px; margin:0 0 4px; }
+  .sub { color:var(--mute); margin:0 0 20px; }
+  nav { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:16px; }
+  nav button { border:1px solid var(--line); background:var(--card); color:var(--ink); padding:6px 10px; border-radius:6px; cursor:pointer; font:inherit; font-size:13px; }
+  nav button[aria-current="true"] { border-color:var(--accent); color:var(--accent); font-weight:600; }
+  .grid { display:grid; grid-template-columns: minmax(0,1.4fr) minmax(0,1fr); gap:16px; }
+  @media (max-width:760px) { .grid { grid-template-columns:1fr; } }
+  .screen { background:var(--card); border:2px solid var(--line); border-radius:10px; padding:20px; min-height:360px; }
+  .screen h2 { font-size:17px; margin:0 0 12px; }
+  .box { border:1.5px dashed var(--line); border-radius:6px; padding:10px; margin:8px 0; color:var(--mute); }
+  .btn { display:inline-block; border:1.5px solid var(--ink); border-radius:6px; padding:7px 12px; margin:6px 6px 0 0; background:none; color:var(--ink); font:inherit; cursor:pointer; }
+  .btn.primary { background:var(--accent); border-color:var(--accent); color:#fff; }
+  .btn:focus-visible, nav button:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+  .notes { background:var(--note); color:var(--noteink); border-radius:10px; padding:16px; font-size:14px; }
+  .notes h3 { margin:0 0 8px; font-size:14px; text-transform:uppercase; letter-spacing:.04em; }
+  .notes ul { margin:0; padding-left:18px; }
+  .tag { font-size:11px; font-weight:700; padding:1px 6px; border-radius:4px; border:1px solid currentColor; margin-left:6px; }
+  .check li { list-style:none; margin-left:-18px; }
+  footer { margin-top:24px; color:var(--mute); font-size:13px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Onboarding V1 wireflow</h1>
+  <p class="sub">Product Designer 005, brief version 2026-07. Low-fidelity on purpose. Every screen links its decision to session IDs from the fixture. Use the tabs, or the buttons inside each screen.</p>
+  <nav id="tabs" aria-label="Screens"></nav>
+  <div class="grid">
+    <section class="screen" id="screen" aria-live="polite"></section>
+    <aside class="notes" id="notes"></aside>
+  </div>
+  <footer>Old flow: Account → Invite 3+ (blocking) → Integrations wall → Project → Tutorial.<br>New flow: Account → Pick a template → <strong>Live sample project (first value)</strong> → contextual invite → one recommended integration. The setup checklist carries anything that was skipped.</footer>
+</main>
+<script>
+const S = [
+ { id:"1", name:"1 · Sign up",
+   ui:`<h2>Create your workspace</h2>
+   <div class="box">Work email</div><div class="box">Password</div><div class="box">Agency name</div>
+   <button class="btn primary" data-go="2">Continue</button>
+   <button class="btn">Continue with Google</button>
+   <p style="font-size:13px;color:var(--mute)">Your company requires SSO? <u>Set up SSO with our team →</u></p>`,
+   notes:`<h3>Decisions</h3><ul>
+   <li>Unchanged fields; this step only loses 5% (brief).</li>
+   <li><b>SSO link</b> routes admins to the sales-assisted path instead of a dead end (S-07, 22 min, sales handoff). V1 is just a link. A full SSO setup flow is out of scope.</li></ul>` },
+ { id:"2", name:"2 · Pick a template",
+   ui:`<h2>What are you running first?</h2>
+   <button class="btn" data-go="3">Client campaign</button><button class="btn" data-go="3">Website build</button>
+   <button class="btn" data-go="3">Retainer / ongoing</button><button class="btn" data-go="3">Just show me around</button>
+   <p style="font-size:13px;color:var(--mute)">We'll open a sample project you can edit. Nothing is shared until you invite someone.</p>`,
+   notes:`<h3>Decisions</h3><ul>
+   <li>One click replaces the invite wall as step 2. The old step 2 is where every in-ICP stall at that step happened (S-01, S-10, S-14).</li>
+   <li>"Just show me around" answers "try it myself first" (S-01) and "I didn't understand why I needed to create a project" (brief research).</li>
+   <li>Every option still lands in a project. The data says reaching a project is the value moment: 7/9 who reached step 4 were active on day 14, vs 0/7 who didn't.</li></ul>` },
+ { id:"3", name:"3 · Sample project",
+   ui:`<h2>Spring Campaign: Acme (sample) <span class="tag">FIRST VALUE</span></h2>
+   <div class="box">Board: Brief · In progress · Client review · Done — 6 sample tasks</div>
+   <div class="box">▶ 90-second tour (optional) &nbsp;·&nbsp; <u>Prefer a guided demo? Book 15 min</u></div>
+   <div class="box"><b>Setup checklist</b> (pinned, collapsible)<ul class="check">
+   <li>☑ Move a task to "Client review"</li><li>☐ Assign a task to a teammate</li><li>☐ Connect Slack for client-review alerts</li><li>☐ Start your own project</li></ul></div>
+   <button class="btn primary" data-go="4">Assign "Draft copy" →</button>`,
+   notes:`<h3>Decisions</h3><ul>
+   <li>A pre-filled sample is the thing users already find useful: "that sample was the useful part" (S-08, active d14 without finishing).</li>
+   <li>The tutorial becomes a 90-second optional tour inside the product rather than a final gate (S-16: "the tutorial is what sold me", but they almost quit before reaching it).</li>
+   <li>The demo link covers the one person asking for more hand-holding (S-14). It's cheap to offer. I'm not redesigning around a single voice.</li>
+   <li>The checklist shows there's more to do (S-15: "didn't realize there was more").</li>
+   <li><b>First value</b> = a task moved in a project. Checking the box doesn't count.</li></ul>` },
+ { id:"4", name:"4 · Invite in context",
+   ui:`<h2>Assign "Draft copy" to…</h2>
+   <div class="box">Teammate's email</div>
+   <p style="font-size:13px;color:var(--mute)">They'll get the task and join this workspace.</p>
+   <button class="btn primary" data-go="5">Send invite + assign</button><button class="btn" data-go="5">Assign to me for now</button>`,
+   notes:`<h3>Decisions</h3><ul>
+   <li>The invite happens when it has a reason: you're handing someone real work. It preserves the invite loop that brings in 30% of signups (brief) without blocking.</li>
+   <li>No "3+" minimum. Solo users can keep going (S-03 is out of ICP, but agency owners hit the same wall: S-10).</li>
+   <li>Invitees join a project that already has context, which is the smooth path S-02 and S-09 describe.</li>
+   <li><b>Trade-off I'm accepting:</b> fewer invites in session one, betting on more invites per workspace by day 7. Guardrail metric below.</li></ul>` },
+ { id:"5", name:"5 · One integration",
+   ui:`<h2>Get client-review alerts in Slack?</h2>
+   <p>Recommended for campaign projects.</p>
+   <button class="btn primary" data-go="3">Connect Slack</button><button class="btn" data-go="3">Not now</button>
+   <p style="font-size:13px;color:var(--mute)"><u>See all integrations</u> (Google, Figma, …)</p>`,
+   notes:`<h3>Decisions</h3><ul>
+   <li>One recommended integration, tied to the template, replaces the wall of options (S-04: "way too many options"; S-16: "integrations wall").</li>
+   <li><b>Accessibility fix ships in V1:</b> fully keyboard-operable dialog with focus trap and Esc to close (S-11). It's a defect, so one report is enough.</li>
+   <li>Re-entry: offered again when the user first sets a task to "Client review", and on the day-2 email.</li>
+   <li>I don't treat "2+ integrations = 3x retention" as causal. In the fixture, every user with fewer than 2 integrations who reached a project was active on day 14 (4/4).</li></ul>` }
+];
+const tabs = document.getElementById("tabs"), scr = document.getElementById("screen"), notes = document.getElementById("notes");
+function show(id){
+  const s = S.find(x=>x.id===id); scr.innerHTML = s.ui; notes.innerHTML = s.notes;
+  [...tabs.children].forEach(b=>b.setAttribute("aria-current", b.dataset.go===id));
+  scr.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>show(b.dataset.go)));
+}
+S.forEach(s=>{ const b=document.createElement("button"); b.textContent=s.name; b.dataset.go=s.id; b.onclick=()=>show(s.id); tabs.appendChild(b); });
+show("1");
+</script>
+</body>
+</html>

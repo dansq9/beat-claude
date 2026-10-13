@@ -1,0 +1,35 @@
+fixture sha256: 8afd77aa7feb1895cc6e7e0eb8bde35fb518dbea6470e7dbcdb002db52b6428e
+sessions: 16
+
+segments
+  joined via teammate invite (different flow): ['S-02', 'S-09']
+  outside 10-100 ICP: [('S-03', 1), ('S-13', 1)]
+  probable repeat user: ['S-05'] (likely same person as S-01)
+  core self-serve ICP sessions: 12
+
+core: last step reached by non-completers
+  step 2: 3  ['S-01', 'S-10', 'S-14']
+  step 3: 3  ['S-04', 'S-07', 'S-11']
+  step 4: 2  ['S-08', 'S-15']
+
+completion vs day-14 activity (all sessions)
+  completed, active d14:     5/7 (71%)
+  not completed, active d14: 2/9 (22%)
+  completed but inactive d14: ['S-06', 'S-12']
+  never completed but active d14: ['S-08', 'S-15']
+  reached step 4 (first project), active d14: 7/9 (78%)
+  stopped before step 4, active d14: 0/7 (0%)
+
+integrations >= 2 vs < 2, active d14 (brief claims 3x retention)
+  >=2: 3/5 (60%)
+  <2:  4/11 (36%)
+  <2 but reached a project: 4/4 (100%)
+
+rows needing special handling
+  accessibility blocker (defect, fix regardless of n): ['S-11']
+  SSO / admin-first requirement (sales-led path): ['S-07']
+  minority-of-one: wants MORE hand-holding: ['S-14']
+  contradiction: invite step skippable via tiny link: ['S-13']
+  contradiction: invite step reported as hard-blocking: ['S-03']
+  completion != value: existing tool habit: ['S-12']
+  slowest sessions: [('S-07', 22), ('S-11', 19), ('S-04', 16)]

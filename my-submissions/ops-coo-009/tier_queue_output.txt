@@ -1,0 +1,60 @@
+fixture sha256: 2de9268f03c7764bc85d3447336ba211938a3b506933af4ea80844a4a3034c78
+items: 18
+
+Q-01  RED    age=12d  owner=unassigned    SLA-BREACH  (automation said YELLOW)
+       why: top-account revenue at risk
+       flag: UNOWNED 12d: assign today
+Q-09  RED    age=12d  owner=unassigned    SLA-BREACH  (automation said YELLOW)
+       why: top-account revenue at risk
+       flag: DUPLICATE: merge into parent, don't double-work
+       flag: UNOWNED 12d: assign today
+Q-11  RED    age= 6d  owner=unassigned    SLA-BREACH  (automation said GREEN)
+       why: legal/contract term change
+       flag: UNOWNED 6d: assign today
+Q-16  RED    age= 4d  owner=unassigned    SLA-BREACH  (automation said GREEN)
+       why: client-confidential data would leave the relationship
+Q-15  RED    age= 2d  owner=exec sponsor  SLA-BREACH
+       why: top-account revenue at risk
+       flag: EXEC AS OWNER: move ownership to account lead, keep exec for one decision
+Q-06  YELLOW age=30d  owner=unassigned    SLA-BREACH  (automation said GREEN)
+       why: external-facing or revenue-touching
+       flag: UNOWNED 30d: assign today
+Q-13  YELLOW age=15d  owner=AE-1          SLA-BREACH
+       why: external-facing or revenue-touching
+       flag: FALSE-DONE: status says done, outcome says otherwise
+Q-04  YELLOW age= 8d  owner=AE-2          SLA-BREACH
+       why: external-facing or revenue-touching
+Q-03  YELLOW age= 3d  owner=unassigned    SLA-BREACH  (automation said GREEN)
+       why: external-facing or revenue-touching
+Q-18  YELLOW age= 3d  owner=talent lead   SLA-BREACH  (automation said GREEN)
+       why: external-facing or revenue-touching
+Q-17  YELLOW age= 2d  owner=SDR team       (automation said GREEN)
+       why: irreversible external send
+       flag: DUPLICATE: merge into parent, don't double-work
+Q-02  YELLOW age= 1d  owner=SDR team       (automation said GREEN)
+       why: irreversible external send
+Q-08  YELLOW age= 1d  owner=auto-executed  (automation said GREEN)
+       why: irreversible external send
+       flag: FALSE-DONE: status says done, outcome says otherwise
+Q-14  GREEN  age= 9d  owner=unassigned    SLA-BREACH
+       why: internal, reversible
+       flag: UNOWNED 9d: assign today
+       flag: DEAD TARGET: client churned; close + fix account-status feed
+Q-10  GREEN  age= 5d  owner=content team 
+       why: internal, reversible
+Q-07  GREEN  age= 2d  owner=SEO lead     
+       why: internal, reversible
+Q-12  GREEN  age= 1d  owner=unassigned   
+       why: internal, reversible
+       flag: ALERT FLOOD (15/wk): route stream to weekly digest
+Q-05  GREEN  age= 0d  owner=unassigned   
+       why: internal, reversible
+       flag: ALERT FLOOD (14/wk): route stream to weekly digest
+
+summary
+  tiers: RED=5 YELLOW=8 GREEN=5
+  automation tier guess disagrees with tree: 10/18
+  unassigned: 9/18
+  SLA breaches: 11/18
+  duplicates merged: 2 (Q-09, Q-17)
+  exec sponsor decisions needed: 2 (Q-11, Q-15) vs 18 if the exec reviews the whole queue
